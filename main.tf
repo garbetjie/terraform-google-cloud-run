@@ -3,8 +3,8 @@ data google_project default {
 }
 
 resource google_cloud_run_service default {
-  location = var.region
   name = var.name
+  location = var.location
   autogenerate_revision_name = true
 
   template {

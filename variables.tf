@@ -6,9 +6,8 @@ variable image {
   type = string
 }
 
-variable region {
+variable location {
   type = string
-  default = null
 }
 
 variable allow_public_access {
