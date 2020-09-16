@@ -47,7 +47,7 @@ variable concurrency {
 
 variable max_instances {
   type = number
-  default = null
+  default = 1000
 }
 
 variable service_account_email {
