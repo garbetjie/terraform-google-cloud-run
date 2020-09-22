@@ -39,6 +39,7 @@ resource google_cloud_run_service default {
         "run.googleapis.com/cloudsql-instances" = join(",", var.cloudsql_connections)
         "run.googleapis.com/vpc-access-connector" = var.vpc_connector_name
         "autoscaling.knative.dev/maxScale" = var.max_instances
+        "run.googleapis.com/vpc-access-egress" = var.vpc_access_egress
       }
     }
   }

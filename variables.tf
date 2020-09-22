@@ -69,3 +69,8 @@ variable vpc_connector_name {
   type = string
   default = null
 }
+
+variable vpc_access_egress {
+  type = string
+  default = "private-ranges-only"
+}
