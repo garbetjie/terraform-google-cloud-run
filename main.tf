@@ -35,12 +35,16 @@ resource google_cloud_run_service default {
     }
 
     metadata {
-      annotations = {
-        "run.googleapis.com/cloudsql-instances" = join(",", var.cloudsql_connections)
-        "run.googleapis.com/vpc-access-connector" = var.vpc_connector_name
-        "autoscaling.knative.dev/maxScale" = var.max_instances
-        "run.googleapis.com/vpc-access-egress" = var.vpc_access_egress
-      }
+      annotations = merge(
+        {
+          "run.googleapis.com/cloudsql-instances" = join(",", var.cloudsql_connections)
+          "autoscaling.knative.dev/maxScale" = var.max_instances
+        },
+        var.vpc_connector_name == null ? {} : {
+          "run.googleapis.com/vpc-access-connector" = var.vpc_connector_name
+          "run.googleapis.com/vpc-access-egress" = var.vpc_access_egress
+        }
+      )
     }
   }
 
