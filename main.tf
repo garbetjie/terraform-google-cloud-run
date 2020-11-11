@@ -39,7 +39,6 @@ resource google_cloud_run_service default {
         {
           "run.googleapis.com/cloudsql-instances" = join(",", var.cloudsql_connections)
           "autoscaling.knative.dev/maxScale" = var.max_instances
-          "run.googleapis.com/launch-stage" = upper(var.launch_stage)
         },
         var.vpc_connector_name == null ? {} : {
           "run.googleapis.com/vpc-access-connector" = var.vpc_connector_name
@@ -73,9 +72,16 @@ resource google_cloud_run_domain_mapping domains {
 
   metadata {
     namespace = data.google_project.default.project_id
+    annotations = {
+      "run.googleapis.com/launch-stage" = "BETA"
+    }
   }
 
   spec {
     route_name = google_cloud_run_service.default.name
+  }
+
+  lifecycle {
+    ignore_changes = [metadata[0]]
   }
 }

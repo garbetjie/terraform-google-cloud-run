@@ -74,8 +74,3 @@ variable vpc_access_egress {
   type = string
   default = "private-ranges-only"
 }
-
-variable launch_stage {
-  type = string
-  default = "BETA"
-}
