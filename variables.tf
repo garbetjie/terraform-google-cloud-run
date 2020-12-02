@@ -74,3 +74,8 @@ variable vpc_access_egress {
   type = string
   default = "private-ranges-only"
 }
+
+variable port {
+  type = number
+  default = 8080
+}

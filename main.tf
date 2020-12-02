@@ -16,6 +16,10 @@ resource google_cloud_run_service default {
       containers {
         image = var.image
 
+        ports {
+          container_port = var.port
+        }
+
         resources {
           limits = {
             cpu = var.cpus
