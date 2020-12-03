@@ -22,7 +22,7 @@ resource google_cloud_run_service default {
 
         resources {
           limits = {
-            cpu = var.cpus
+            cpu = "${var.cpus * 1000}m"
             memory = "${var.memory}Mi"
           }
         }
