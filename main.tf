@@ -41,6 +41,7 @@ resource google_cloud_run_service default {
     metadata {
       annotations = merge(
         {
+          "run.googleapis.com/launch-stage" = "BETA"
           "run.googleapis.com/cloudsql-instances" = join(",", var.cloudsql_connections)
           "autoscaling.knative.dev/maxScale" = var.max_instances
           "autoscaling.knative.dev/minScale" = var.min_instances
