@@ -1,13 +1,16 @@
 output name {
   value = google_cloud_run_service.default.name
+  description = "Name of the created service."
 }
 
 output revision {
   value = google_cloud_run_service.default.status[0].latest_ready_revision_name
+  description = "Deployed revision for the service."
 }
 
 output url {
   value = google_cloud_run_service.default.status[0].url
+  description = "The URL on which the deployed service is available."
 }
 
 locals {
@@ -42,4 +45,5 @@ output dns {
         }
       ]
   }
+  description = "DNS records to populate for mapped domains. Keys are the domains that are mapped."
 }

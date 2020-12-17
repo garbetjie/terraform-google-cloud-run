@@ -43,6 +43,7 @@ resource google_cloud_run_service default {
         {
           "run.googleapis.com/cloudsql-instances" = join(",", var.cloudsql_connections)
           "autoscaling.knative.dev/maxScale" = var.max_instances
+          "autoscaling.knative.dev/minScale" = var.min_instances
         },
         var.vpc_connector_name == null ? {} : {
           "run.googleapis.com/vpc-access-connector" = var.vpc_connector_name
@@ -55,7 +56,7 @@ resource google_cloud_run_service default {
   traffic {
     percent = 100
     latest_revision = var.revision == null
-    revision_name = var.revision
+    revision_name = var.revision != null ? "${var.name}-${var.revision}" : null
   }
 }
 
