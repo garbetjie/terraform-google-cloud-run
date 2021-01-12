@@ -7,6 +7,12 @@ resource google_cloud_run_service default {
   location = var.location
   autogenerate_revision_name = true
 
+  metadata {
+    annotations = {
+      "run.googleapis.com/launch-stage" = "BETA"
+    }
+  }
+
   template {
     spec {
       container_concurrency = var.concurrency

@@ -47,3 +47,9 @@ module cloud_run {
 | name     | Name of the created service.                                                      | string                                                                |
 | revision | Deployed revision for the service.                                                | string                                                                |
 | url      | The URL on which the deployed service is available.                               | string                                                                |
+
+## Changelog
+
+* **1.0.0**
+    * Release stable version.
+    * Add BETA launch-stage to service (fixes inability to use `min_instances`).
