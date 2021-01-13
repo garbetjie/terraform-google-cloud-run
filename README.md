@@ -1,7 +1,8 @@
 Terraform Module: Google Cloud Run
 ==================================
 
-A Terraform module for [Google Cloud](https://cloud.google.com) that simplifies the creation of a Cloud Run instance.
+A Terraform module for [Google Cloud](https://cloud.google.com) that simplifies the creation of a Cloud Run (Fully Managed)
+service.
 
 ## Basic usage
 
