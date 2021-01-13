@@ -53,6 +53,9 @@ module cloud_run {
 
 ## Changelog
 
+* **1.1.0**
+    * Add `project` variable, to be able to specify the project in which to create the Cloud Run service.
+
 * **1.0.0**
     * Release stable version.
     * Add BETA launch-stage to service (fixes inability to use `min_instances`).
