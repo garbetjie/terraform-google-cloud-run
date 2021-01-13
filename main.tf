@@ -1,13 +1,15 @@
 data google_project default {
-
+  project_id = var.project
 }
 
 resource google_cloud_run_service default {
   name = var.name
   location = var.location
   autogenerate_revision_name = true
+  project = data.google_project.default.project_id
 
   metadata {
+    namespace = data.google_project.default.project_id
     annotations = {
       "run.googleapis.com/launch-stage" = "BETA"
       "run.googleapis.com/ingress" = local.service_ingress
@@ -83,6 +85,7 @@ resource google_cloud_run_service_iam_member public_access {
   count = var.allow_public_access ? 1 : 0
   service = google_cloud_run_service.default.name
   location = google_cloud_run_service.default.location
+  project = google_cloud_run_service.default.project
   role = "roles/run.invoker"
   member = "allUsers"
 }
@@ -91,6 +94,7 @@ resource google_cloud_run_domain_mapping domains {
   for_each = var.map_domains
 
   location = google_cloud_run_service.default.location
+  project = google_cloud_run_service.default.project
   name = each.value
 
   metadata {

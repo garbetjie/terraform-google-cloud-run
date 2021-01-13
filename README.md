@@ -34,6 +34,7 @@ module cloud_run {
 | memory                | Memory (in MB) to allocate to service instances.                                             | number       | `256`                   | No       |
 | min_instances         | Minimum number of service instances to keep running.                                         | number       | `0`                     | No       |
 | port                  | Port on which the container is listening for incoming HTTP requests.                         | number       | `8080`                  | No       |
+| project               | Google Cloud project in which to create the service.                                         | string       | `null`                  | No       |
 | revision              | Revision name to create and deploy. When `null`, revision names are automatically generated. | string       | `null`                  | No       |
 | service_account_email | Service account email to assign to the service.                                              | string       | `null`                  | No       |
 | timeout               | Length of time (in seconds) to allow requests to run for.                                    | number       | `60`                    | No       |
@@ -46,6 +47,7 @@ module cloud_run {
 |----------|-----------------------------------------------------------------------------------|-----------------------------------------------------------------------|
 | dns      | DNS records to populate for mapped domains. Keys are the domains that are mapped. | map(object({ type = string, name = string, rrdatas = list(string) })) |
 | name     | Name of the created service.                                                      | string                                                                |
+| project  | Google Cloud project in which the service was created.                            | string                                                                |
 | revision | Deployed revision for the service.                                                | string                                                                |
 | url      | The URL on which the deployed service is available.                               | string                                                                |
 

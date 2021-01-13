@@ -13,6 +13,11 @@ output url {
   description = "The URL on which the deployed service is available."
 }
 
+output project {
+  value = google_cloud_run_service.default.project
+  description = "Google Cloud project in which the service was created."
+}
+
 locals {
   output_dns_pairs = {
     for domain in var.map_domains:

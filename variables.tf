@@ -25,6 +25,12 @@ variable memory {
   description = "Memory (in MB) to allocate to service instances."
 }
 
+variable project {
+  type = string
+  default = null
+  description = "Google Cloud project in which to create the service."
+}
+
 variable cpus {
   type = number
   default = 1
