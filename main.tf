@@ -10,6 +10,7 @@ resource google_cloud_run_service default {
 
   metadata {
     namespace = data.google_project.default.project_id
+    labels = var.labels
     annotations = {
       "run.googleapis.com/launch-stage" = "BETA"
       "run.googleapis.com/ingress" = local.service_ingress
@@ -58,6 +59,7 @@ resource google_cloud_run_service default {
     }
 
     metadata {
+      labels = var.labels
       annotations = merge(
         {
           "run.googleapis.com/launch-stage" = "BETA"

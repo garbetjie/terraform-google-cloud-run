@@ -18,6 +18,11 @@ output project {
   description = "Google Cloud project in which the service was created."
 }
 
+output labels {
+  value = google_cloud_run_service.default.metadata[0].labels
+  description = "Labels applied to the created service."
+}
+
 locals {
   output_dns_pairs = {
     for domain in var.map_domains:

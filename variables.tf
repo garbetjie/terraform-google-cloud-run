@@ -13,6 +13,12 @@ variable location {
   description = "Location in which to run the service."
 }
 
+variable labels {
+  type = map(string)
+  default = {}
+  description = "Labels to apply to the service."
+}
+
 variable allow_public_access {
   type = bool
   default = true
