@@ -3,17 +3,17 @@ data google_project default {
 }
 
 resource google_cloud_run_service default {
-  name = var.name
-  location = var.location
+  name                       = var.name
+  location                   = var.location
   autogenerate_revision_name = true
-  project = data.google_project.default.project_id
+  project                    = data.google_project.default.project_id
 
   metadata {
     namespace = data.google_project.default.project_id
-    labels = var.labels
+    labels    = var.labels
     annotations = {
       "run.googleapis.com/launch-stage" = "BETA"
-      "run.googleapis.com/ingress" = local.service_ingress
+      "run.googleapis.com/ingress"      = var.service_ingress
     }
   }
 
@@ -30,8 +30,8 @@ resource google_cloud_run_service default {
   template {
     spec {
       container_concurrency = var.concurrency
-      timeout_seconds = var.timeout
-      service_account_name = var.service_account_email
+      timeout_seconds       = var.timeout
+      service_account_name  = var.service_account_email
 
       containers {
         image = var.image
@@ -42,7 +42,7 @@ resource google_cloud_run_service default {
 
         resources {
           limits = {
-            cpu = "${var.cpus * 1000}m"
+            cpu    = "${var.cpus * 1000}m"
             memory = "${var.memory}Mi"
           }
         }
@@ -51,7 +51,7 @@ resource google_cloud_run_service default {
           for_each = var.env
 
           content {
-            name = env.key
+            name  = env.key
             value = env.value
           }
         }
@@ -62,42 +62,42 @@ resource google_cloud_run_service default {
       labels = var.labels
       annotations = merge(
         {
-          "run.googleapis.com/launch-stage" = "BETA"
+          "run.googleapis.com/launch-stage"       = "BETA"
           "run.googleapis.com/cloudsql-instances" = join(",", var.cloudsql_connections)
-          "autoscaling.knative.dev/maxScale" = var.max_instances
-          "autoscaling.knative.dev/minScale" = var.min_instances
+          "autoscaling.knative.dev/maxScale"      = var.max_instances
+          "autoscaling.knative.dev/minScale"      = var.min_instances
         },
         var.vpc_connector_name == null ? {} : {
           "run.googleapis.com/vpc-access-connector" = var.vpc_connector_name
-          "run.googleapis.com/vpc-access-egress" = var.vpc_access_egress
+          "run.googleapis.com/vpc-access-egress"    = var.vpc_access_egress
         }
       )
     }
   }
 
   traffic {
-    percent = 100
+    percent         = 100
     latest_revision = var.revision == null
-    revision_name = var.revision != null ? "${var.name}-${var.revision}" : null
+    revision_name   = var.revision != null ? "${var.name}-${var.revision}" : null
   }
 }
 
 
 resource google_cloud_run_service_iam_member public_access {
-  count = var.allow_public_access ? 1 : 0
-  service = google_cloud_run_service.default.name
+  count    = var.allow_public_access ? 1 : 0
+  service  = google_cloud_run_service.default.name
   location = google_cloud_run_service.default.location
-  project = google_cloud_run_service.default.project
-  role = "roles/run.invoker"
-  member = "allUsers"
+  project  = google_cloud_run_service.default.project
+  role     = "roles/run.invoker"
+  member   = "allUsers"
 }
 
 resource google_cloud_run_domain_mapping domains {
   for_each = var.map_domains
 
   location = google_cloud_run_service.default.location
-  project = google_cloud_run_service.default.project
-  name = each.value
+  project  = google_cloud_run_service.default.project
+  name     = each.value
 
   metadata {
     namespace = data.google_project.default.project_id
