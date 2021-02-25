@@ -23,6 +23,16 @@ output labels {
   description = "Labels applied to the created service."
 }
 
+output location {
+  value = google_cloud_run_service.default.location
+  description = "Location in which the Cloud Run service was created."
+}
+
+output id {
+  value = google_cloud_run_service.default.id
+  description = "Identifier for the created service."
+}
+
 locals {
   output_dns_pairs = {
     for domain in var.map_domains:

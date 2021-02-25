@@ -48,13 +48,22 @@ module cloud_run {
 | Name     | Description                                                                       | Type                                                                  |
 |----------|-----------------------------------------------------------------------------------|-----------------------------------------------------------------------|
 | dns      | DNS records to populate for mapped domains. Keys are the domains that are mapped. | map(object({ type = string, name = string, rrdatas = list(string) })) |
+| id       | Identifier for the created service.                                               | string                                                                |
 | labels   | Labels applied to the created service.                                            | map(string)                                                           |
+| location | Location in which the Cloud Run service was created.                              | string                                                                |
 | name     | Name of the created service.                                                      | string                                                                |
 | project  | Google Cloud project in which the service was created.                            | string                                                                |
 | revision | Deployed revision for the service.                                                | string                                                                |
 | url      | The URL on which the deployed service is available.                               | string                                                                |
 
 ## Changelog
+
+* **1.4.0**
+    * Ignore additional annotations in order to prevent unnecessary diffs:
+      * `run.googleapis.com/sandbox`
+      * `serving.knative.dev/creator`
+      * `serving.knative.dev/lastModifier`
+    * Add outputs `location` and `id`.
 
 * **1.3.0**
     * Add `ingress` input variable - to specify the level of network access restriction on the service.
