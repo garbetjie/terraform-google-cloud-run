@@ -13,7 +13,7 @@ resource google_cloud_run_service default {
     labels = var.labels
     annotations = {
       "run.googleapis.com/launch-stage" = "BETA"
-      "run.googleapis.com/ingress" = local.service_ingress
+      "run.googleapis.com/ingress" = var.ingress
     }
   }
 

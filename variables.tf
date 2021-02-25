@@ -114,3 +114,9 @@ variable port {
   default = 8080
   description = "Port on which the container is listening for incoming HTTP requests."
 }
+
+variable ingress {
+  type = string
+  default = "all"
+  description = "Restrict network access to this service. Allowed values: [`all`, `internal`, `internal-and-cloud-load-balancing`]"
+}
