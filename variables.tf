@@ -31,7 +31,7 @@ variable memory {
   description = "Memory (in MB) to allocate to service instances."
 }
 
-variable project {
+variable project_id {
   type = string
   default = null
   description = "Google Cloud project in which to create the service."
@@ -92,9 +92,37 @@ variable map_domains {
 }
 
 variable env {
-  type = map(string)
-  default = {}
+  type = set(
+    object({
+      env = string,
+      value = optional(string),
+      secret = optional(string),
+      version = optional(string),
+    })
+  )
+
+  default = []
   description = "Environment variables to inject into the service instance."
+
+  validation {
+    error_message = "Environment variables must have one of `value` or `secret` defined."
+    condition = alltrue(
+      length([for e in var.env: e if (e.value == null && e.secret == null)]) < 1,
+      length([for e in var.env: e if (e.value != null && e.secret != null)]) < 1,
+    )
+  }
+}
+
+variable args {
+  type = list(string)
+  default = []
+  description = "Arguments to the service's entrypoint."
+}
+
+variable entrypoint {
+  type = list(string)
+  default = []
+  description = "Entrypoint command. Defaults to the image's ENTRYPOINT if not provided."
 }
 
 variable vpc_connector_name {

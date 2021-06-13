@@ -1,20 +1,13 @@
-data google_project default {
-  project_id = var.project
-}
-
 resource google_cloud_run_service default {
   name = var.name
   location = var.location
   autogenerate_revision_name = true
-  project = data.google_project.default.project_id
+  project = local.project_id
 
   metadata {
-    namespace = data.google_project.default.project_id
+    namespace = local.project_id
     labels = var.labels
-    annotations = {
-      "run.googleapis.com/launch-stage" = "BETA"
-      "run.googleapis.com/ingress" = var.ingress
-    }
+    annotations = { "run.googleapis.com/ingress" = var.ingress }
   }
 
   lifecycle {
@@ -38,6 +31,8 @@ resource google_cloud_run_service default {
 
       containers {
         image = var.image
+        command = var.entrypoint
+        args = var.args
 
         ports {
           container_port = var.port
@@ -50,12 +45,28 @@ resource google_cloud_run_service default {
           }
         }
 
-        dynamic "env" {
-          for_each = var.env
+        # Populate straight environment variables.
+        dynamic env {
+          for_each = [for e in local.env: e if e.value != null]
 
           content {
-            name = env.key
-            value = env.value
+            name = env.value.env
+            value = env.value.value
+          }
+        }
+
+        # Populate environment variables from secrets.
+        dynamic env {
+          for_each = [for e in local.env: e if e.secret != null]
+
+          content {
+            name = env.value.env
+            value_from {
+              secret_key_ref {
+                name = env.value.secret
+                key = env.value.version
+              }
+            }
           }
         }
       }
