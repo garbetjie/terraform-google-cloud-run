@@ -106,10 +106,10 @@ variable env {
 
   validation {
     error_message = "Environment variables must have one of `value` or `secret` defined."
-    condition = alltrue(
+    condition = alltrue([
       length([for e in var.env: e if (e.value == null && e.secret == null)]) < 1,
       length([for e in var.env: e if (e.value != null && e.secret != null)]) < 1,
-    )
+    ])
   }
 }
 
