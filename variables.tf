@@ -125,6 +125,17 @@ variable entrypoint {
   description = "Entrypoint command. Defaults to the image's ENTRYPOINT if not provided."
 }
 
+variable volumes {
+  type = set(object({ path = string, secret = string, versions = optional(map(string)) }))
+  default = []
+  description = "Secrets to mount as volumes into the service."
+
+  validation {
+    error_message = "Multiple volumes for the same path can't be defined."
+    condition = length(tolist(var.volumes.*.path)) == length(toset(var.volumes.*.path))
+  }
+}
+
 variable vpc_connector_name {
   type = string
   default = null
