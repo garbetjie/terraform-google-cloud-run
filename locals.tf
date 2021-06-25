@@ -1,5 +1,5 @@
 locals {
-  project_id = var.project_id
+  project_id = var.project
 
   # Fill in defaults for environment variables.
   env = toset([
