@@ -4,7 +4,7 @@ locals {
   # Fill in defaults for environment variables.
   env = toset([
     for e in var.env: {
-      env = e.env
+      key = e.key
       value = e.value
       secret = {
         name = e.secret

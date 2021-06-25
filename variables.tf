@@ -94,7 +94,7 @@ variable map_domains {
 variable env {
   type = set(
     object({
-      env = string,
+      key = string,
       value = optional(string),
       secret = optional(string),
       version = optional(string),

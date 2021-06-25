@@ -60,7 +60,7 @@ resource google_cloud_run_service default {
           for_each = [for e in local.env: e if e.value != null]
 
           content {
-            name = env.value.env
+            name = env.value.key
             value = env.value.value
           }
         }
@@ -70,7 +70,7 @@ resource google_cloud_run_service default {
           for_each = [for e in local.env: e if e.secret.name != null]
 
           content {
-            name = env.value.env
+            name = env.value.key
             value_from {
               secret_key_ref {
                 name = coalesce(env.value.secret.alias, env.value.secret.name)
