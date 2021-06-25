@@ -158,4 +158,9 @@ variable ingress {
   type = string
   default = "all"
   description = "Restrict network access to this service. Allowed values: [`all`, `internal`, `internal-and-cloud-load-balancing`]"
+
+  validation {
+    error_message = "Ingress must be one of: [\"all\", \"internal\", \"internal-and-cloud-load-balancing\"]."
+    condition = contains(["all", "internal", "internal-and-cloud-load-balancing"], var.ingress)
+  }
 }
