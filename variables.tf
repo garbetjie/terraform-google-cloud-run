@@ -136,16 +136,27 @@ variable volumes {
   }
 }
 
+variable vpc_access {
+  type = object({ connector = optional(string), egress = optional(string) })
+  default = { connector = null, egress = null }
+  description = "Control VPC access for the Cloud Run service."
+
+  validation {
+    error_message = "VPC access egress must be one of the following values: [\"all-traffic\", \"private-ranges-only\"]."
+    condition = var.vpc_access.connector != null && (var.vpc_access.egress == null || contains(["all-traffic", "private-ranges-only"], coalesce(var.vpc_access.egress, "-")))
+  }
+}
+
 variable vpc_connector_name {
   type = string
   default = null
-  description = "VPC connector to apply to this service."
+  description = "VPC connector to apply to this service (Deprecated - use `var.vpc_access.connector` instead)."
 }
 
 variable vpc_access_egress {
   type = string
   default = "private-ranges-only"
-  description = "Specify whether to divert all outbound traffic through the VPC, or private ranges only."
+  description = "Specify whether to divert all outbound traffic through the VPC, or private ranges only (Deprecated - use `var.vpc_access.egress` instead)."
 }
 
 variable port {

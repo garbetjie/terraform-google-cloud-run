@@ -124,9 +124,9 @@ resource google_cloud_run_service default {
           "autoscaling.knative.dev/maxScale" = var.max_instances
           "autoscaling.knative.dev/minScale" = var.min_instances
         },
-        var.vpc_connector_name == null ? {} : {
-          "run.googleapis.com/vpc-access-connector" = var.vpc_connector_name
-          "run.googleapis.com/vpc-access-egress" = var.vpc_access_egress
+        local.vpc_access.connector == null ? {} : {
+          "run.googleapis.com/vpc-access-connector" = local.vpc_access.connector
+          "run.googleapis.com/vpc-access-egress" = local.vpc_access.egress
         },
         length(local.secrets_to_aliases) < 1 ? {} : {
           "run.googleapis.com/secrets" = join(",", [for secret, alias in local.secrets_to_aliases: "${alias}:${secret}"])
