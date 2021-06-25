@@ -1,3 +1,4 @@
+
 resource google_cloud_run_service default {
   provider = google-beta
 
@@ -13,6 +14,8 @@ resource google_cloud_run_service default {
       {
         "run.googleapis.com/launch-stage" = local.launch_stage
         "run.googleapis.com/ingress" = var.ingress
+        "run.googleapis.com/client-name" = "terraform"
+        "client.knative.dev/user-image" = var.image
       },
       length(local.secrets_to_aliases) < 1 ? {} : {
         "run.googleapis.com/secrets" = join(",", [for secret, alias in local.secrets_to_aliases: "${alias}:${secret}"])
