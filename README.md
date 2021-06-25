@@ -58,6 +58,12 @@ module cloud_run {
 
 ## Changelog
 
+* **2.0.0**
+    * Switch to using the `google-beta` provider for Cloud Run services.
+    * Bump minimum required versions: `terraform >= 0.14`, `google-beta >= 3.67.0`, `google >= 3.67.0`.
+    * Add support for secrets as environment variables & volumes.
+    * Add ability to configure the container's entrypoint and arguments.
+    
 * **1.4.0**
     * Ignore additional annotations in order to prevent unnecessary diffs:
       * `run.googleapis.com/sandbox`
