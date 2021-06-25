@@ -1,4 +1,6 @@
 resource google_cloud_run_service default {
+  provider = google-beta
+
   name = var.name
   location = var.location
   autogenerate_revision_name = true
@@ -7,7 +9,15 @@ resource google_cloud_run_service default {
   metadata {
     namespace = local.project_id
     labels = var.labels
-    annotations = { "run.googleapis.com/ingress" = var.ingress }
+    annotations = merge(
+      {
+        "run.googleapis.com/launch-stage" = local.launch_stage
+        "run.googleapis.com/ingress" = var.ingress
+      },
+      length(local.secrets_to_aliases) < 1 ? {} : {
+        "run.googleapis.com/secrets" = join(",", [for secret, alias in local.secrets_to_aliases: "${alias}:${secret}"])
+      }
+    )
   }
 
   lifecycle {
@@ -57,14 +67,44 @@ resource google_cloud_run_service default {
 
         # Populate environment variables from secrets.
         dynamic env {
-          for_each = [for e in local.env: e if e.secret != null]
+          for_each = [for e in local.env: e if e.secret.name != null]
 
           content {
             name = env.value.env
             value_from {
               secret_key_ref {
-                name = env.value.secret
+                name = coalesce(env.value.secret.alias, env.value.secret.name)
                 key = env.value.version
+              }
+            }
+          }
+        }
+
+        dynamic volume_mounts {
+          for_each = local.volumes
+
+          content {
+            name = volume_mounts.value.name
+            mount_path = volume_mounts.value.path
+          }
+        }
+      }
+
+      dynamic volumes {
+        for_each = local.volumes
+
+        content {
+          name = volumes.value.name
+
+          secret {
+            secret_name = coalesce(volumes.value.secret.alias, volumes.value.secret.name)
+
+            dynamic items {
+              for_each = volumes.value.items
+
+              content {
+                key = items.value.version
+                path = items.value.filename
               }
             }
           }
@@ -76,7 +116,7 @@ resource google_cloud_run_service default {
       labels = var.labels
       annotations = merge(
         {
-          "run.googleapis.com/launch-stage" = "BETA"
+          "run.googleapis.com/launch-stage" = local.launch_stage
           "run.googleapis.com/cloudsql-instances" = join(",", var.cloudsql_connections)
           "autoscaling.knative.dev/maxScale" = var.max_instances
           "autoscaling.knative.dev/minScale" = var.min_instances
@@ -84,7 +124,10 @@ resource google_cloud_run_service default {
         var.vpc_connector_name == null ? {} : {
           "run.googleapis.com/vpc-access-connector" = var.vpc_connector_name
           "run.googleapis.com/vpc-access-egress" = var.vpc_access_egress
-        }
+        },
+        length(local.secrets_to_aliases) < 1 ? {} : {
+          "run.googleapis.com/secrets" = join(",", [for secret, alias in local.secrets_to_aliases: "${alias}:${secret}"])
+        },
       )
     }
   }
@@ -114,9 +157,9 @@ resource google_cloud_run_domain_mapping domains {
   name = each.value
 
   metadata {
-    namespace = data.google_project.default.project_id
+    namespace = local.project_id
     annotations = {
-      "run.googleapis.com/launch-stage" = "BETA"
+      "run.googleapis.com/launch-stage" = local.launch_stage
     }
   }
 
