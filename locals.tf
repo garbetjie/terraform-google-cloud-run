@@ -9,8 +9,8 @@ locals {
       secret = {
         name = e.secret
         alias = e.secret != null ? lookup(local.secrets_to_aliases, e.secret, null) : null
+        version = coalesce(e.version, "latest")
       }
-      version = coalesce(e.version, "latest")
     }
   ])
 

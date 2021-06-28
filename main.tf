@@ -77,7 +77,7 @@ resource google_cloud_run_service default {
             value_from {
               secret_key_ref {
                 name = coalesce(env.value.secret.alias, env.value.secret.name)
-                key = env.value.version
+                key = env.value.secret.version
               }
             }
           }
@@ -160,7 +160,7 @@ resource google_cloud_run_domain_mapping domains {
   name = each.value
 
   metadata {
-    namespace = local.project_id
+    namespace = google_cloud_run_service.default.project
     annotations = {
       "run.googleapis.com/launch-stage" = local.launch_stage
     }
