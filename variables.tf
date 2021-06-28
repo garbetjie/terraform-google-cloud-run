@@ -1,46 +1,48 @@
 variable name {
   type = string
-  description = "Name of the Cloud Run service."
+  description = "Name of the service."
 }
 
 variable image {
   type = string
-  description = "GCR-hosted image to deploy to the service."
+  description = "Docker image name."
 }
 
 variable location {
   type = string
-  description = "Location in which to run the service."
+  description = "Location of the service."
 }
+
+// --
 
 variable allow_public_access {
   type = bool
   default = true
-  description = "Allow non-authenticated access to the service."
+  description = "Allow unauthenticated access to the service."
 }
 
 variable args {
   type = list(string)
   default = []
-  description = "Arguments to the service's entrypoint."
+  description = "Arguments to pass to the entrypoint."
 }
 
 variable cloudsql_connections {
   type = set(string)
   default = []
-  description = "Cloud SQL connections to attach to service instances."
+  description = "Cloud SQL connections to attach to container instances."
 }
 
 variable concurrency {
   type = number
   default = null
-  description = "Maximum number of requests a single service instance can handle at once."
+  description = "Maximum allowed concurrent requests per container for this revision."
 }
 
 variable cpus {
   type = number
   default = 1
-  description = "CPUs to allocate to service instances."
+  description = "Number of CPUs to allocate per container."
 }
 
 variable entrypoint {
@@ -60,7 +62,7 @@ variable env {
   )
 
   default = []
-  description = "Environment variables to inject into the service instance."
+  description = "Environment variables to inject into container instances."
 
   validation {
     error_message = "Environment variables must have one of `value` or `secret` defined."
@@ -74,7 +76,7 @@ variable env {
 variable ingress {
   type = string
   default = "all"
-  description = "Restrict network access to this service. Allowed values: [`all`, `internal`, `internal-and-cloud-load-balancing`]"
+  description = "Ingress settings for the service. Allowed values: [`\"all\"`, `\"internal\"`, `\"internal-and-cloud-load-balancing\"`]"
 
   validation {
     error_message = "Ingress must be one of: [\"all\", \"internal\", \"internal-and-cloud-load-balancing\"]."
@@ -91,25 +93,25 @@ variable labels {
 variable map_domains {
   type = set(string)
   default = []
-  description = "Domain names to map to this service instance."
+  description = "Domain names to map to the service."
 }
 
 variable max_instances {
   type = number
   default = 1000
-  description = "Maximum number of service instances to allow to start."
+  description = "Maximum number of container instances allowed to start."
 }
 
 variable memory {
   type = number
   default = 256
-  description = "Memory (in MB) to allocate to service instances."
+  description = "Memory (in Mi) to allocate to containers."
 }
 
 variable min_instances {
   type = number
   default = 0
-  description = "Minimum number of service instances to keep running."
+  description = "Minimum number of container instances to keep running."
 }
 
 variable port {
@@ -121,31 +123,31 @@ variable port {
 variable project {
   type = string
   default = null
-  description = "Google Cloud project in which to create the service."
+  description = "Google Cloud project in which to create resources."
 }
 
 variable revision {
   type = string
   default = null
-  description = "Revision name to create and deploy."
+  description = "Revision name to use. When `null`, revision names are automatically generated."
 }
 
 variable service_account_email {
   type = string
   default = null
-  description = "Service account email to assign to the service."
+  description = "IAM service account email to assign to container instances."
 }
 
 variable timeout {
   type = number
   default = 60
-  description = "Length of time (in seconds) to allow requests to run for."
+  description = "Maximum duration (in seconds) allowed for responding to requests."
 }
 
 variable volumes {
   type = set(object({ path = string, secret = string, versions = optional(map(string)) }))
   default = []
-  description = "Secrets to mount as volumes into the service."
+  description = "Volumes to be mounted & populated from secrets."
 
   validation {
     error_message = "Multiple volumes for the same path can't be defined."
@@ -156,11 +158,11 @@ variable volumes {
 variable vpc_access {
   type = object({ connector = optional(string), egress = optional(string) })
   default = { connector = null, egress = null }
-  description = "Control VPC access for the Cloud Run service."
+  description = "Control VPC access for the service."
 
   validation {
     error_message = "VPC access egress must be one of the following values: [\"all-traffic\", \"private-ranges-only\"]."
-    condition = var.vpc_access.connector != null && (var.vpc_access.egress == null || contains(["all-traffic", "private-ranges-only"], coalesce(var.vpc_access.egress, "-")))
+    condition = var.vpc_access.connector == null || var.vpc_access.egress == null || contains(["all-traffic", "private-ranges-only"], coalesce(var.vpc_access.egress, "private-ranges-only"))
   }
 }
 
