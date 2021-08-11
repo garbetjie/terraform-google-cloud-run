@@ -58,6 +58,7 @@ output env {
     }
   ]
   description = "Environment variables injected into container instances."
+  sensitive = true
 }
 
 output ingress {
