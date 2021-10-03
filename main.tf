@@ -49,6 +49,7 @@ resource google_cloud_run_service default {
 
         ports {
           container_port = var.port
+          name           = "http1"
         }
 
         resources {
