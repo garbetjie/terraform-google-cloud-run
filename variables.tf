@@ -45,6 +45,12 @@ variable cpus {
   description = "Number of CPUs to allocate per container."
 }
 
+variable cpu_throttling {
+  type = bool
+  default = true
+  description = "CPU is only allocated during request processing"
+}
+
 variable entrypoint {
   type = list(string)
   default = []
