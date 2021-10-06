@@ -111,6 +111,7 @@ Refer to https://cloud.google.com/run/docs/configuring/secrets for further readi
 | env.*.value           | Raw string value of the environment variable.                                                                                                                                      | optional(string)                                                                                               | `null`                                | No       |
 | env.*.secret          | Secret to populate the environment variable from. Secrets in other projects should use the `projects/{{project}}/secrets/{{secret}}` format.                                       | optional(string)                                                                                               | `null`                                | No       |
 | env.*.version         | Version to use when populating with a secret. Defaults to the latest version.                                                                                                      | string                                                                                                         | `"latest"`                            | No       |
+| http2                 | Enable use of HTTP/2 end-to-end.                                                                                                                                                   | bool                                                                                                           | `false`                               | No       |
 | ingress               | Ingress settings for the service. Allowed values: [`"all"`, `"internal"`, `"internal-and-cloud-load-balancing"`]                                                                   | string                                                                                                         | `all`                                 | No       |
 | labels                | [Labels](https://cloud.google.com/run/docs/configuring/labels) to apply to the service.                                                                                            | map(string)                                                                                                    | `{}`                                  | No       |
 | map_domains           | Domain names to map to the service.                                                                                                                                                | set(string)                                                                                                    | `[]`                                  | No       |
@@ -144,8 +145,9 @@ In addition to the inputs documented above, the following values are available a
 
 # Changelog
 
-* **Next**
+* **2.1.0**
     * Implement CPU throttling configuration (thanks @salimkayabasi).
+    * Implement HTTP/2 end-to-end support.
 
 * **2.0.0**
     * Switch to using the `google-beta` provider for Cloud Run services.

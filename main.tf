@@ -12,7 +12,6 @@ resource google_cloud_run_service default {
     labels = var.labels
     annotations = merge(
       {
-        "run.googleapis.com/launch-stage" = local.launch_stage
         "run.googleapis.com/ingress" = var.ingress
         "run.googleapis.com/client-name" = "terraform"
         "client.knative.dev/user-image" = var.image
@@ -48,6 +47,7 @@ resource google_cloud_run_service default {
         args = var.args
 
         ports {
+          name = var.http2 ? "h2c" : "http1"
           container_port = var.port
         }
 

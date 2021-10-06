@@ -65,6 +65,11 @@ output env {
   description = "Environment variables injected into container instances."
 }
 
+output http2 {
+  value = var.http2
+  description = "Status of HTTP/2 end-to-end handling."
+}
+
 output ingress {
   value = google_cloud_run_service.default.metadata[0].annotations["run.googleapis.com/ingress"]
   description = "Ingress settings applied to the service."

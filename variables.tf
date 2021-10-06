@@ -79,6 +79,12 @@ variable env {
   }
 }
 
+variable http2 {
+  type = bool
+  default = false
+  description = "Enable use of HTTP/2 end-to-end."
+}
+
 variable ingress {
   type = string
   default = "all"
