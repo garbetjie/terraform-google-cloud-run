@@ -50,6 +50,7 @@ module my_cloud_run_service {
   args = []
   cloudsql_connections = []
   concurrency = 80
+  cpu_throttling = true
   cpus = 1
   entrypoint = []
   env = [{ key = "ENV_VAR_KEY", value = "ENV_VAR_VALUE" }]
@@ -102,6 +103,7 @@ Refer to https://cloud.google.com/run/docs/configuring/secrets for further readi
 | args                  | Arguments to pass to the entrypoint.                                                                                                                                               | list(string)                                                                                                   | `[]`                                  | No       |
 | cloudsql_connections  | Cloud SQL connections to attach to container instances.                                                                                                                            | set(string)                                                                                                    | `[]`                                  | No       |
 | concurrency           | Maximum allowed concurrent requests per container for this revision.                                                                                                               | number                                                                                                         | `null`                                | No       |
+| cpu_throttling        | Configure CPU throttling outside of request processing.                                                                                                                            | bool                                                                                                           | `true`                                | No       |
 | cpus                  | Number of CPUs to allocate per container.                                                                                                                                          | number                                                                                                         | `1`                                   | No       |
 | entrypoint            | Entrypoint command. Defaults to the image's ENTRYPOINT if not provided.                                                                                                            | list(string)                                                                                                   | `[]`                                  | No       |
 | env                   | Environment variables to inject into container instances. Exactly one of `value` or `secret` must be specified.                                                                    | set(object({ key = string, value = optional(string), secret = optional(string), version = optional(string) })) | `[]`                                  | No       |
@@ -141,6 +143,9 @@ In addition to the inputs documented above, the following values are available a
 | dns                          | DNS records to populate for mapped domains. Keys are the domains that were specified in `var.map_domains`. | map(list(object({ name = optional(string), root = string, type = string, rrdatas = set(string) }))) |
 
 # Changelog
+
+* **Next**
+    * Implement CPU throttling configuration (thanks @salimkayabasi).
 
 * **2.0.0**
     * Switch to using the `google-beta` provider for Cloud Run services.

@@ -39,16 +39,16 @@ variable concurrency {
   description = "Maximum allowed concurrent requests per container for this revision."
 }
 
+variable cpu_throttling {
+  type = bool
+  default = true
+  description = "Configure CPU throttling outside of request processing."
+}
+
 variable cpus {
   type = number
   default = 1
   description = "Number of CPUs to allocate per container."
-}
-
-variable cpu_throttling {
-  type = bool
-  default = true
-  description = "CPU is only allocated during request processing"
 }
 
 variable entrypoint {

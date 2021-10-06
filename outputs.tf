@@ -33,6 +33,11 @@ output concurrency {
   description = "Maximum allowed concurrent requests per container for the created revision."
 }
 
+output cpu_throttling {
+  value = var.cpu_throttling
+  description = "Configuration for CPU throttling outside of request processing."
+}
+
 output cpus {
   value = var.cpus
   description = "Number of CPUs allocated per container."
