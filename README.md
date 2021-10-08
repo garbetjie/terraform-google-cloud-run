@@ -145,6 +145,9 @@ In addition to the inputs documented above, the following values are available a
 
 # Changelog
 
+* **2.1.1**
+    * Placed `run.googleapis.com/launch-stage` in the service's annotations, not the revision's. 
+
 * **2.1.0**
     * Implement CPU throttling configuration (thanks @salimkayabasi).
     * Implement HTTP/2 end-to-end support.
