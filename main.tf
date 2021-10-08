@@ -120,7 +120,6 @@ resource google_cloud_run_service default {
       labels = var.labels
       annotations = merge(
         {
-          "run.googleapis.com/launch-stage" = local.launch_stage
           "run.googleapis.com/cpu-throttling" = var.cpu_throttling
           "run.googleapis.com/cloudsql-instances" = join(",", var.cloudsql_connections)
           "autoscaling.knative.dev/maxScale" = var.max_instances
