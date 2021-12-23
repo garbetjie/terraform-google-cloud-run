@@ -193,3 +193,8 @@ output dns {
 
   description = "DNS records to populate for mapped domains. Keys are the domains that are mapped."
 }
+
+output "execution_environment" {
+  value = var.execution_environment
+  description = "Execution environment. (if null == first generation)"
+}
