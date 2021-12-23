@@ -51,6 +51,7 @@ module my_cloud_run_service {
   cloudsql_connections = []
   concurrency = 80
   cpu_throttling = true
+  execution_environment = "gen2"
   cpus = 1
   entrypoint = []
   env = [{ key = "ENV_VAR_KEY", value = "ENV_VAR_VALUE" }]

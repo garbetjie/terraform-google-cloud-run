@@ -117,7 +117,7 @@ variable max_instances {
 variable memory {
   type = number
   default = 256
-  description = "Memory (in Mi) to allocate to containers."
+  description = "Memory (in Mi) to allocate to containers. (min. 512Mi for gen2 exec environment)"
 }
 
 variable min_instances {
@@ -188,4 +188,10 @@ variable vpc_access_egress {
   type = string
   default = "private-ranges-only"
   description = "Specify whether to divert all outbound traffic through the VPC, or private ranges only (Deprecated - use `var.vpc_access.egress` instead)."
+}
+
+variable "execution_environment" {
+  type = string
+  default = null
+  description = "Execution environment generation"
 }
