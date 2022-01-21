@@ -32,6 +32,7 @@ resource google_cloud_run_service default {
       metadata[0].annotations["serving.knative.dev/creator"],
       metadata[0].annotations["serving.knative.dev/lastModifier"],
       metadata[0].annotations["run.googleapis.com/ingress-status"],
+      metadata[0].annotations["run.googleapis.com/launch-stage"],
       metadata[0].labels["cloud.googleapis.com/location"],
     ]
   }
