@@ -141,6 +141,10 @@ resource google_cloud_run_service default {
     latest_revision = var.revision == null
     revision_name = var.revision != null ? "${var.name}-${var.revision}" : null
   }
+
+  depends_on = [
+    google_project_service.run_api
+  ]
 }
 
 
