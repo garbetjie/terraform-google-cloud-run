@@ -73,10 +73,16 @@ variable env {
   validation {
     error_message = "Environment variables must have one of `value` or `secret` defined."
     condition = alltrue([
-      length([for e in var.env: e if (can(e.value) && can(e.secret))]) == 0,
-      length([for e in var.env: e if (!can(e.value) && !can(e.secret))]) == 0,
+      length([for e in var.env: e if (e.value == null && e.secret == null)]) < 1,
+      length([for e in var.env: e if (e.value != null && e.secret != null)]) < 1,
     ])
   }
+}
+
+variable execution_environment {
+  type = string
+  default = "gen1"
+  description = "Execution environment to run container instances under."
 }
 
 variable http2 {
@@ -117,7 +123,7 @@ variable max_instances {
 variable memory {
   type = number
   default = 256
-  description = "Memory (in Mi) to allocate to containers. (min. 512Mi for gen2 exec environment)"
+  description = "Memory (in Mi) to allocate to containers. Minimum of 512Mi is required when `execution_environment` is `\"gen2\"`."
 }
 
 variable min_instances {
@@ -188,10 +194,4 @@ variable vpc_access_egress {
   type = string
   default = "private-ranges-only"
   description = "Specify whether to divert all outbound traffic through the VPC, or private ranges only (Deprecated - use `var.vpc_access.egress` instead)."
-}
-
-variable "execution_environment" {
-  type = string
-  default = null
-  description = "Execution environment generation"
 }

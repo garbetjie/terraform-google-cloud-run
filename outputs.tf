@@ -65,6 +65,11 @@ output env {
   description = "Environment variables injected into container instances."
 }
 
+output execution_environment {
+  value = google_cloud_run_service.default.template[0].metadata[0].annotations["run.googleapis.com/execution-environment"]
+  description = "Execution environment container instances are running under."
+}
+
 output http2 {
   value = var.http2
   description = "Status of HTTP/2 end-to-end handling."
@@ -192,9 +197,4 @@ output dns {
   }
 
   description = "DNS records to populate for mapped domains. Keys are the domains that are mapped."
-}
-
-output "execution_environment" {
-  value = var.execution_environment
-  description = "Execution environment. (if null == first generation)"
 }
