@@ -148,6 +148,9 @@ In addition to the inputs documented above, the following values are available a
 
 # Changelog
 
+* **2.2.0**
+    * Implement [execution environment](https://cloud.google.com/run/docs/configuring/execution-environments) configuration (thanks @dennislapchenko).
+
 * **2.1.1**
     * Placed `run.googleapis.com/launch-stage` in the service's annotations, not the revision's. 
 
