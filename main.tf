@@ -152,6 +152,9 @@ resource google_cloud_run_service_iam_member public_access {
   project = google_cloud_run_service.default.project
   role = "roles/run.invoker"
   member = "allUsers"
+  depends_on = [
+    google_cloud_run_service.default
+  ]
 }
 
 resource google_cloud_run_domain_mapping domains {
@@ -175,4 +178,8 @@ resource google_cloud_run_domain_mapping domains {
   lifecycle {
     ignore_changes = [metadata[0]]
   }
+  
+  depends_on = [
+    google_cloud_run_service.default
+  ]
 }
