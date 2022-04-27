@@ -148,6 +148,9 @@ In addition to the inputs documented above, the following values are available a
 
 # Changelog
 
+* **2.2.1**
+    * Add `run.googleapis.com/launch-stage` to ignored annotations, preventing unnecessary updates in place. 
+
 * **2.2.0**
     * Implement [execution environment](https://cloud.google.com/run/docs/configuring/execution-environments) configuration (thanks @dennislapchenko).
 
