@@ -148,6 +148,10 @@ In addition to the inputs documented above, the following values are available a
 
 # Changelog
 
+* **3.0.0**
+    * Remove the optional attributes experiment.
+    * Bump minimum required version to 1.3.
+
 * **2.2.1**
     * Add `run.googleapis.com/launch-stage` to ignored annotations, preventing unnecessary updates in place. 
 
